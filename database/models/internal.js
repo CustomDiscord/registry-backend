@@ -14,7 +14,7 @@ const Sequelize = require('sequelize')
  * @returns {Boolean}
  */
 module.exports = (db) => {
-  const User = require('./User')(db)
-  const Plugin = require('./Plugin')(db, User)
+  const User = db['import'](require('./User'))
+  const Plugin = db['import'](require('./Plugin'))
   return true
 }

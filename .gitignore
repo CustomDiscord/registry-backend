@@ -60,3 +60,5 @@ typings/
 # Configuration
 config/*.json
 !config/default.json
+
+/models/
