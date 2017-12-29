@@ -6,6 +6,7 @@
  * Created by.............Relative
  * 
  */
+const bodyParser = require('body-parser')
 const config = require('config')
 const db = require('./database')
 const DiscordStrategy = require('passport-discord').Strategy
@@ -32,6 +33,8 @@ app.use(passport.initialize())
 const { AuthRouter, PackageRouter } = require('./routes')
 app.use('/auth', AuthRouter)
 app.use('/package', PackageRouter)
+
+app.use(bodyParser.json())
 
 app.use((err, req, res, next) => {
   if (err.status) {

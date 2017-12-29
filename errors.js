@@ -35,6 +35,12 @@ class InvalidTokenError extends ServerError {
   }
 }
 
+class PackageNotApprovedError extends ServerError {
+  constructor() {
+    super('That package is not approved yet, try again later', '403-PKGUAPR', 403)
+  }
+}
+
 class UnauthorizedError extends ServerError {
   constructor() {
     super('You are not allowed to modify that package', '403-UNAUTH', 403)
@@ -46,5 +52,6 @@ module.exports = {
   PackageNotFoundError,
   ParameterNotDefinedError,
   InvalidTokenError,
-  UnauthorizedError
+  UnauthorizedError,
+  PackageNotApprovedError
 }
