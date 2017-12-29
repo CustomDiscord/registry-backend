@@ -32,6 +32,31 @@ app.use(passport.initialize())
 const { AuthRouter } = require('./routes')
 app.use('/auth', AuthRouter)
 
+app.use((err, req, res, next) => {
+  if (err.status) {
+    return res.status(err.status).json({
+      meta: {
+        status: err.status,
+        success: false,
+        code: err.code || `${err.status}-UNK`,
+        message: err.message || 'An unknown error'
+      }
+    })
+  }
+  logger.error({
+    message: 'An unhandled error occurred',
+    error: err
+  })
+  return res.status(500).json({
+    meta: {
+      status: 500,
+      success: false,
+      code: '500-UNK',
+      message: 'An unknown error occurred, try your request later'
+    }
+  })
+})
+
 app.listen(config.get('server.port'), () => {
   logger.info(`Server listening on port ${config.get('server.port')}`)
 })

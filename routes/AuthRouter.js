@@ -6,6 +6,7 @@
  * Created by.............Relative
  * 
  */
+const Auth = require('../Auth')
 const config = require('config')
 const express = require('express')
 const passport = require('passport')
@@ -23,12 +24,25 @@ router.route('/callback')
     failureRedirect: '/auth/failed',
     session: false
   }), aw(async (req, res, next) => {
-    const user = await User.findOne({
+    const user = await User.findOrCreate({
       where: {
         discordId: req.user.id
+      },
+      defaults: {
+        name: req.user.username,
+        discordId: req.user.id,
+        admin: false
       }
     })
-    res.json(user)
+    const token = Auth.generateToken(user[0] || user, req.user)
+    return res.json({
+      meta: {
+        status: 200,
+        success: true,
+        message: 'Your token is at "token"'
+      },
+      token
+    })
   }))
 
 module.exports = router

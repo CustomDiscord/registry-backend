@@ -13,7 +13,7 @@ const Sequelize = require('sequelize')
  * @returns {Sequelize.Model}
  */
 module.exports = (db) => {
-  const User = require('./User')(db)
+  const { User } = require('./index')
   return db.define('plugin', {
     id: {
       type: Sequelize.UUID,
@@ -27,7 +27,7 @@ module.exports = (db) => {
       type: Sequelize.STRING
     },
     owner: {
-      type: Sequelize.STRING, // UUID of the User
+      type: Sequelize.UUID, // UUID of the User
       references: {
         model: User,
         key: 'id'

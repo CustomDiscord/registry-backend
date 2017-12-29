@@ -21,6 +21,9 @@
       "identify"
     ]
   },
+  "tokens": {
+    "key": "KkhI5YfNCa8edGwNrA8MxMmL4UFDeoFr"
+  },
   "server": {
     "port": 8660,
     "domain": "http://localhost:8660"
