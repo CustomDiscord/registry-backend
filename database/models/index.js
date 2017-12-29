@@ -6,11 +6,17 @@
  * Created by.............Relative
  * 
  */
-const db = require('../')
-const Plugin = require('./Plugin')(db)
-const User = require('./User')(db)
+const Sequelize = require('sequelize')
 
-module.exports = {
-  Plugin,
-  User
-}
+/**
+ * Model cache
+ * @type {Object} ModelCache
+ * @property {Sequelize.Model} User - User model
+ * @property {Sequelize.Model} Plugin - Plugin model
+ */
+
+/**
+ * I am sorry god :(
+ * @type {ModelCache}
+ */
+module.exports = global.modelCache

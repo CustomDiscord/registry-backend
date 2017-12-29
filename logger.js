@@ -12,6 +12,9 @@ const winston = require('winston')
 
 const cformat = winston.format((info) => {
   info[Symbol.for('message')] = info.level + ': ' + info.message
+  if (info.error instanceof Error) {
+    info[Symbol.for('message')] += '\n' + info.error.stack || info.error.message
+  }
   return info
 })
 

@@ -13,7 +13,6 @@ const express = require('express')
 const logger = require('./logger')
 const passport = require('passport')
 
-const { Plugin, User } = require('./database/models')
 const app = express()
 app.set('port', config.get('server.port'))
 

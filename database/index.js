@@ -22,12 +22,26 @@ const db = new Sequelize(
     logging: false
   }
 )
+require('./models/internal')(db)
 
 db.authenticate().then(() => {
   logger.info('Successfully connected to database!')
+  logger.log('verbose', 'Syncing models to the database')
+  db.sync().then(() => {
+    logger.log('verbose', 'Models synchronized with the database successfully')
+  }).catch((err) => {
+    logger.error({
+      message: 'Failed to sync models to the database! Exiting...',
+      error: err
+    })
+    process.exit(0)
+  })
+  
 }).catch((err) => {
-  logger.error('Could not connect to the database.', err)
-  logger.error('Exiting...')
+  logger.error({
+    message: 'Could not connect to the database. Exiting...',
+    error: err
+  })
   process.exit(0)
 })
 
