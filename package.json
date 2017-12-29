@@ -1,0 +1,27 @@
+{
+  "name": "custocord-registry-backend",
+  "displayName": "Custocord Registry Backend",
+  "version": "0.1.0",
+  "description": "The registry backend for Custocord",
+  "main": "index.js",
+  "scripts": {
+    "start": "set NODE_ENV=production&&node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:custocord/registry/backend.git"
+  },
+  "keywords": [],
+  "author": "Nightmare, Relative",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^1.29.0",
+    "express": "^4.16.2",
+    "passport": "^0.4.0",
+    "passport-discord": "^0.1.3",
+    "pg": "^6.4.2",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.28.6",
+    "winston": "^3.0.0-rc1"
+  }
+}

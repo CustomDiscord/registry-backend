@@ -1,0 +1,28 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "password",
+    "database": "custocord"
+  },
+  "logging": {
+    "level": "info",
+    "file": {
+      "enabled": true,
+      "path": "logs/"
+    },
+    "colorize": true
+  },
+  "discord": {
+    "client_id": "1",
+    "client_secret": "1",
+    "scopes": [
+      "identify"
+    ]
+  },
+  "server": {
+    "port": 8660,
+    "domain": "http://localhost:8660"
+  }
+}
