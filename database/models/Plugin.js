@@ -26,6 +26,10 @@ module.exports = (db) => {
     description: {
       type: Sequelize.STRING
     },
+    deleted: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
     owner: {
       type: Sequelize.UUID, // UUID of the User
       references: {
