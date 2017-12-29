@@ -8,6 +8,7 @@
  */
 const config = require('config')
 const jwt = require('jsonwebtoken')
+const { ServerError, ParameterNotDefinedError, PackageNotFoundError, InvalidTokenError } = require('./errors')
 const { User } = require('./database/models')
 
 class AuthManager {
@@ -42,6 +43,27 @@ class AuthManager {
     }
   }
   
+  /**
+   * Auth middleware
+   * @param {Boolean} [admin = false] - Whether admin is required to access the route
+   * @param {Boolean | String} [user = false] - Whether the route is locked down to a certain user
+   * @returns {Function}
+   */
+  middleware(admin = false, user = false) {
+    const self = this
+    return (req, res, next) => {
+      if (!req.get('Authorization')) throw new ParameterNotDefinedError('token')
+      const token = self.verifyToken(req.get('Authorization'))
+      if (!token) throw new InvalidTokenError()
+      const user = User.findById(token.id)
+      if (admin && !user.admin) throw new InvalidTokenError()
+      if (typeof user === 'string' && token.id !== user) throw new InvalidTokenError()
+      req.token = token
+      req.isAdmin = user.admin
+      req.user = user
+      return next()
+    }
+  }
 }
 
 module.exports = new AuthManager()
