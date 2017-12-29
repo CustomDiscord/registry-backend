@@ -8,6 +8,7 @@
  */
 const Auth = require('../Auth')
 const aw = require('../awrap')
+const bodyParser = require('body-parser')
 const config = require('config')
 const express = require('express')
 const passport = require('passport')
@@ -17,6 +18,8 @@ const { User, Plugin } = require('../database/models')
 
 const UUID_MATCH = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 const router = express.Router()
+
+router.use(bodyParser.json())
 
 router.route('/')
   .get(aw(async (req, res, next) => {
@@ -83,6 +86,6 @@ router.route('/:id')
 
 router.route('/create')
   .put(Auth.middleware(false), aw(async (req, res, next) => {
-    
+    res.json(req.body)
   }))
 module.exports = router

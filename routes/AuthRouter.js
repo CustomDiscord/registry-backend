@@ -26,7 +26,7 @@ router.route('/callback')
     failureRedirect: '/auth/failed',
     session: false
   }), aw(async (req, res, next) => {
-    const user = await User.findOrCreate({
+    const user = (await User.findOrCreate({
       where: {
         discordId: req.user.id
       },
@@ -35,14 +35,14 @@ router.route('/callback')
         discordId: req.user.id,
         admin: false
       }
-    })
+    }))[0]
     if(user.name !== `${req.user.username}#${req.user.discriminator}`) {
       user.update({
         name: `${req.user.username}#${req.user.discriminator}`
       })
     }
     // TODO: Redirect to frontend
-    const token = Auth.generateToken(user[0] || user, req.user)
+    const token = Auth.generateToken(user, req.user)
     return res.json(new Response(true, 'Token is in root', 200, {
       token
     }))
