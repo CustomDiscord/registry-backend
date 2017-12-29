@@ -27,7 +27,9 @@ require('./models/internal')(db)
 db.authenticate().then(() => {
   logger.info('Successfully connected to database!')
   logger.log('verbose', 'Syncing models to the database')
-  db.sync().then(() => {
+  db.sync({
+    alter: true
+  }).then(() => {
     logger.log('verbose', 'Models synchronized with the database successfully')
   }).catch((err) => {
     logger.error({
