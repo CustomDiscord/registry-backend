@@ -27,23 +27,21 @@ require('./models/internal')(db)
 db.authenticate().then(() => {
   logger.info('Successfully connected to database!')
   logger.log('verbose', 'Syncing models to the database')
-  db.sync({
-    alter: true
-  }).then(() => {
+  db.sync().then(() => {
     logger.log('verbose', 'Models synchronized with the database successfully')
   }).catch((err) => {
     logger.error({
       message: 'Failed to sync models to the database! Exiting...',
       error: err
     })
-    process.exit(0)
+    process.exit(1)
   })
 }).catch((err) => {
   logger.error({
     message: 'Could not connect to the database. Exiting...',
     error: err
   })
-  process.exit(0)
+  process.exit(1)
 })
 
 module.exports = db
