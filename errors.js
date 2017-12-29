@@ -47,11 +47,25 @@ class UnauthorizedError extends ServerError {
   }
 }
 
+class NoBodyError extends ServerError {
+  constructor() {
+    super('Please specify a body in your request', '400-NOBODY', 400)
+  }
+}
+
+class BodyParamMissingError extends ServerError {
+  constructor(parameter) {
+    super(`"${parameter}" is missing from your body, please define and try again`, `400-NOPARAM-${parameter}`, 400)
+  }
+}
+
 module.exports = {
   ServerError,
   PackageNotFoundError,
   ParameterNotDefinedError,
   InvalidTokenError,
   UnauthorizedError,
-  PackageNotApprovedError
+  PackageNotApprovedError,
+  NoBodyError,
+  BodyParamMissingError
 }

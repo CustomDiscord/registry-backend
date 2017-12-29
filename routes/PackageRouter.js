@@ -8,12 +8,13 @@
  */
 const Auth = require('../Auth')
 const aw = require('../awrap')
+const { bodyChecker } = require('../middleware')
 const bodyParser = require('body-parser')
 const config = require('config')
 const express = require('express')
 const passport = require('passport')
 const Response = require('../Response')
-const { ServerError, PackageNotFoundError, ParameterNotDefinedError, UnauthorizedError, PackageNotApprovedError } = require('../errors')
+const { ServerError, PackageNotFoundError, ParameterNotDefinedError, UnauthorizedError, PackageNotApprovedError, NoBodyError, BodyParamMissingError } = require('../errors')
 const { User, Plugin } = require('../database/models')
 
 const UUID_MATCH = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -85,7 +86,21 @@ router.route('/:id')
   }))
 
 router.route('/create')
-  .put(Auth.middleware(false), aw(async (req, res, next) => {
-    res.json(req.body)
+  .put(Auth.middleware(false), bodyChecker([
+    'name',
+    'version',
+    'archive',
+    'description'
+  ]), aw(async (req, res, next) => {
+    const plugin = await Plugin.create({
+      name: req.body.name,
+      version: req.body.version,
+      archive: req.body.archive,
+      description: req.body.description
+    })
+    return res.json(new Response(true, 'Created', 200, {
+      created: true,
+      id: plugin.id
+    }))
   }))
 module.exports = router
