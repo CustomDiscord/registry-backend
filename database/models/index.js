@@ -7,16 +7,7 @@
  * 
  */
 const Sequelize = require('sequelize')
+const db = require('../')
 
-/**
- * Model cache
- * @type {Object} ModelCache
- * @property {Sequelize.Model} User - User model
- * @property {Sequelize.Model} Plugin - Plugin model
- */
-
-/**
- * I am sorry god :(
- * @type {ModelCache}
- */
-module.exports = global.modelCache
+console.log(db)
+module.exports = db.models

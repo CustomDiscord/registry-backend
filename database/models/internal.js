@@ -7,8 +7,6 @@
  * 
  */
 const Sequelize = require('sequelize')
-// I am sorry :(
-global.modelCache = global.modelCache || {}
 
 /**
  * Define models on the database to use in syncing
@@ -16,7 +14,7 @@ global.modelCache = global.modelCache || {}
  * @returns {Boolean}
  */
 module.exports = (db) => {
-  const User = global.modelCache.User = require('./User')(db)
-  const Plugin = global.modelCache.Plugin = require('./Plugin')(db)
+  const User = require('./User')(db)
+  const Plugin = require('./Plugin')(db, User)
   return true
 }

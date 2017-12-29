@@ -9,11 +9,11 @@
 const Sequelize = require('sequelize')
 /**
  * Define the Model
- * @type {Sequelize} db
+ * @param {Sequelize} db
+ * @param {Sequelize.Model} User
  * @returns {Sequelize.Model}
  */
-module.exports = (db) => {
-  const { User } = require('./index')
+module.exports = (db, User) => {
   return db.define('plugin', {
     id: {
       type: Sequelize.UUID,
