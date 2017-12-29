@@ -9,5 +9,4 @@
 const Sequelize = require('sequelize')
 const db = require('../')
 
-console.log(db)
 module.exports = db.models
