@@ -10,6 +10,7 @@ const Auth = require('../Auth')
 const config = require('config')
 const express = require('express')
 const passport = require('passport')
+const Response = require('../Response')
 const { User } = require('../database/models')
 
 const aw = require('../awrap')
@@ -19,6 +20,7 @@ router.route('/')
   .get(passport.authenticate('discord', {
     session: false
   }))
+
 router.route('/callback')
   .get(passport.authenticate('discord', {
     failureRedirect: '/auth/failed',
@@ -34,15 +36,11 @@ router.route('/callback')
         admin: false
       }
     })
+    // TODO: Redirect to frontend
     const token = Auth.generateToken(user[0] || user, req.user)
-    return res.json({
-      meta: {
-        status: 200,
-        success: true,
-        message: 'Your token is at "token"'
-      },
+    return res.json(new Response(true, 'Token is in root', 200, {
       token
-    })
+    }))
   }))
 
 module.exports = router

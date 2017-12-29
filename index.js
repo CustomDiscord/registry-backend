@@ -29,8 +29,9 @@ passport.use(new DiscordStrategy({
 }))
 app.use(passport.initialize())
 
-const { AuthRouter } = require('./routes')
+const { AuthRouter, PackageRouter } = require('./routes')
 app.use('/auth', AuthRouter)
+app.use('/package', PackageRouter)
 
 app.use((err, req, res, next) => {
   if (err.status) {
@@ -38,7 +39,7 @@ app.use((err, req, res, next) => {
       meta: {
         status: err.status,
         success: false,
-        code: err.code || `${err.status}-UNK`,
+        code: err.code || `${err.status}-UNKWN`,
         message: err.message || 'An unknown error'
       }
     })
@@ -51,7 +52,7 @@ app.use((err, req, res, next) => {
     meta: {
       status: 500,
       success: false,
-      code: '500-UNK',
+      code: '500-UNKWN',
       message: 'An unknown error occurred, try your request later'
     }
   })
