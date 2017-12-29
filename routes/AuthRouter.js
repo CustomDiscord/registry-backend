@@ -31,11 +31,16 @@ router.route('/callback')
         discordId: req.user.id
       },
       defaults: {
-        name: req.user.username,
+        name: `${req.user.username}#${req.user.discriminator}`,
         discordId: req.user.id,
         admin: false
       }
     })
+    if(user.name !== `${req.user.username}#${req.user.discriminator}`) {
+      user.update({
+        name: `${req.user.username}#${req.user.discriminator}`
+      })
+    }
     // TODO: Redirect to frontend
     const token = Auth.generateToken(user[0] || user, req.user)
     return res.json(new Response(true, 'Token is in root', 200, {
