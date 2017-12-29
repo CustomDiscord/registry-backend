@@ -36,7 +36,6 @@ db.authenticate().then(() => {
     })
     process.exit(0)
   })
-  
 }).catch((err) => {
   logger.error({
     message: 'Could not connect to the database. Exiting...',
