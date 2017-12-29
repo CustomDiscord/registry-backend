@@ -57,7 +57,6 @@ class AuthManager {
       if (!token) throw new InvalidTokenError()
       const user = User.findById(token.id)
       if (admin && !user.admin) throw new InvalidTokenError()
-      if (typeof user === 'string' && token.id !== user) throw new InvalidTokenError()
       req.token = token
       req.isAdmin = user.admin
       req.user = user
@@ -65,5 +64,4 @@ class AuthManager {
     }
   }
 }
-
 module.exports = new AuthManager()

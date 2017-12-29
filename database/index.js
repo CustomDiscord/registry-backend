@@ -28,8 +28,7 @@ db.authenticate().then(() => {
   logger.info('Successfully connected to database!')
   logger.log('verbose', 'Syncing models to the database')
   db.sync({
-    alter: true,
-    force: true
+    alter: true
   }).then(() => {
     logger.log('verbose', 'Models synchronized with the database successfully')
   }).catch((err) => {
