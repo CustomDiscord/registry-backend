@@ -15,7 +15,11 @@
  */
 module.exports = (fn) => {
   return (req, res, next) => {
-    fn(req, res, next).catch((err) => {
+    fn(req, res, next).then((response) => {
+      if(response && response.status) {
+        return res.status(response.status).json(response.obj())
+      }
+    }).catch((err) => {
       return next(err)
     })
   }

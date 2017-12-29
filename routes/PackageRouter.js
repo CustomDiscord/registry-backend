@@ -45,9 +45,9 @@ router.route('/')
         verified: plugin.verified
       })
     }
-    return res.json(new Response({
+    return new Response({
       plugins
-    }))
+    })
   }))
 
 router.route('/:id')
@@ -58,7 +58,7 @@ router.route('/:id')
     const plugin = await Plugin.findById(pkgId)
     if (!plugin) throw new PackageNotFoundError(pkgId)
     if (!plugin.approved) throw new PackageNotApprovedError()
-    return res.json(new Response({
+    return new Response({
       id: plugin.id,
       name: plugin.name,
       owner: plugin.owner,
@@ -67,7 +67,7 @@ router.route('/:id')
       styles: plugin.styles,
       archive: plugin.archive,
       verified: plugin.verified
-    }))
+    })
   }))
   .delete(Auth.middleware(false), aw(async (req, res, next) => {
     if (typeof req.params.id !== 'string') throw new ParameterNotDefinedError('id')
@@ -80,9 +80,9 @@ router.route('/:id')
     plugin.update({
       deleted: true
     })
-    return res.status(200).json(new Response({
+    return new Response({
       deleted: true
-    }))
+    })
   }))
 
 router.route('/create')
@@ -96,11 +96,12 @@ router.route('/create')
       name: req.body.name,
       version: req.body.version,
       archive: req.body.archive,
-      description: req.body.description
+      description: req.body.description,
+      owner: req.user.id
     })
-    return res.json(new Response(true, 'Created', 200, {
+    return new Response(true, 'Created', 200, {
       created: true,
       id: plugin.id
-    }))
+    })
   }))
 module.exports = router

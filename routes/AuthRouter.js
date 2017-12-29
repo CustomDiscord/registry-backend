@@ -43,9 +43,9 @@ router.route('/callback')
     }
     // TODO: Redirect to frontend
     const token = Auth.generateToken(user, req.user)
-    return res.json(new Response(true, 'Token is in root', 200, {
+    return new Response(true, 'Token is in root', 200, {
       token
-    }))
+    })
   }))
 
 module.exports = router

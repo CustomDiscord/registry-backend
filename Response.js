@@ -43,7 +43,6 @@ class Response {
       this.message = message || 'OK'
       this.payload = payload || {}
     }
-    return this.obj()
   }
   obj() {
     const obj = Object.assign({
