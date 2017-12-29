@@ -29,6 +29,7 @@ router.route('/:id')
   .delete(Auth.middleware(false), aw(async (req, res, next) => {
     if (typeof req.params.id !== 'string') throw new ParameterNotDefinedError('id')
     const pkgId = req.params.id
+    if (!UUID_MATCH.test(pkgId)) throw new PackageNotFoundError(pkgId)
     const plugin = await Plugin.findById(pkgId)
     if (!plugin) throw new PackageNotFoundError(pkgId)
     const hasAccess = (plugin.owner === req.user.id || req.user.admin)
