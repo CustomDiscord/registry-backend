@@ -13,7 +13,7 @@ const Sequelize = require('sequelize')
  * @returns {Sequelize.Model}
  */
 module.exports = (db) => {
-  return db.define('user', {
+  return db.define('User', {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4,
