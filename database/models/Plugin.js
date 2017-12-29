@@ -34,6 +34,10 @@ module.exports = (db, User) => {
       type: Sequelize.BOOLEAN,
       defaultValue: true
     },
+    verified: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
     owner: {
       type: Sequelize.UUID, // UUID of the User
       references: {
