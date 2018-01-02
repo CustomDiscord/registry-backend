@@ -42,7 +42,8 @@ router.route('/')
         styles: plugin.styles,
         archive: plugin.isStyle ? undefined : plugin.archive,
         verified: plugin.verified,
-        isStyle: plugin.isStyle
+        isStyle: plugin.isStyle,
+        downloads: plugin.downloads.length || 0
       })
     })
     return new Response({
@@ -67,7 +68,8 @@ router.route('/:id')
       styles: plugin.styles,
       archive: plugin.isStyle ? undefined : plugin.archive,
       verified: plugin.verified,
-      isStyle: plugin.isStyle
+      isStyle: plugin.isStyle,
+      downloads: plugin.downloads.length || 0
     })
   }))
   .patch(Auth.middleware(false), aw(async (req, res, next) => {
@@ -113,6 +115,24 @@ router.route('/:id')
     })
   }))
 
+router.route('/:id/download')
+  .get(Auth.middleware(false), aw(async (req, res, next) => {
+    if (typeof req.params.id !== 'string') throw new ParameterNotDefinedError('id')
+    const pkgId = req.params.id
+    if (!UUID_MATCH.test(pkgId)) throw new PackageNotFoundError(pkgId)
+    const plugin = await Plugin.findById(pkgId)
+    if (!plugin) throw new PackageNotFoundError(pkgId)
+    if (!plugin.approved) throw new PackageNotApprovedError()
+    const downloads = plugin.downloads || []
+    if (downloads.indexOf(req.user.id) !== -1) return new Response(true, 'Already tracked download', 200, {})
+    downloads.push(req.user.id)
+    plugin.update({
+      downloads
+    })
+    return new Response(true, 'Tracked download', 200, {
+      downloads: downloads.length
+    })
+  }))
 
 router.route('/create')
   .put(Auth.middleware(false), bodyChecker([
