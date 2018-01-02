@@ -32,8 +32,7 @@ router.route('/')
       }
     })
     const plugins = []
-    for(const plugin of _plugins) {
-      if (!_plugins.hasOwnProperty(plugin)) continue
+    _plugins.forEach((plugin) => {
       plugins.push({
         id: plugin.id,
         name: plugin.name,
@@ -44,7 +43,7 @@ router.route('/')
         archive: plugin.archive,
         verified: plugin.verified
       })
-    }
+    })
     return new Response({
       plugins
     })
@@ -69,6 +68,33 @@ router.route('/:id')
       verified: plugin.verified
     })
   }))
+  .patch(Auth.middleware(false), aw(async (req, res, next) => {
+    if (typeof req.params.id !== 'string') throw new ParameterNotDefinedError('id')
+    const pkgId = req.params.id
+    if (!UUID_MATCH.test(pkgId)) throw new PackageNotFoundError(pkgId)
+    const plugin = await Plugin.findById(pkgId)
+    if (!plugin) throw new PackageNotFoundError(pkgId)
+    const hasAccess = (plugin.owner === req.user.id || req.user.admin)
+    if (!hasAccess) throw new UnauthorizedError()
+    const body = req.body
+    let update = {
+      name: body.name,
+      description: body.description,
+      unlisted: body.unlisted,
+      archive: body.archive,
+      styles: body.styles,
+      version: body.version
+    }
+    if (req.user.admin) {
+      update.verified = body.verified
+      update.approved = body.approved
+    }
+    plugin.update(update)
+    return new Response(true, 'Updated', 200, {
+      updated: true,
+      id: plugin.id
+    })
+  }))
   .delete(Auth.middleware(false), aw(async (req, res, next) => {
     if (typeof req.params.id !== 'string') throw new ParameterNotDefinedError('id')
     const pkgId = req.params.id
@@ -84,6 +110,7 @@ router.route('/:id')
       deleted: true
     })
   }))
+
 
 router.route('/create')
   .put(Auth.middleware(false), bodyChecker([
@@ -104,4 +131,5 @@ router.route('/create')
       id: plugin.id
     })
   }))
+
 module.exports = router

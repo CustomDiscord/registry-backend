@@ -55,12 +55,13 @@ class AuthManager {
       if (!req.get('Authorization')) throw new ParameterNotDefinedError('token')
       const token = self.verifyToken(req.get('Authorization'))
       if (!token) throw new InvalidTokenError()
-      const user = User.findById(token.id)
-      if (admin && !user.admin) throw new InvalidTokenError()
-      req.token = token
-      req.isAdmin = user.admin
-      req.user = user
-      return next()
+      User.findById(token.id).then((user) => {
+        if (admin && !user.admin) throw new InvalidTokenError()
+        req.token = token
+        req.isAdmin = user.admin
+        req.user = user
+        return next()
+      })
     }
   }
 }
