@@ -43,7 +43,7 @@ router.route('/')
         archive: plugin.isStyle ? undefined : plugin.archive,
         verified: plugin.verified,
         isStyle: plugin.isStyle,
-        downloads: plugin.downloads.length || 0
+        downloads: Array.isArray(plugin.downloads) ? plugin.downloads.length : 0
       })
     })
     return new Response({
@@ -69,7 +69,7 @@ router.route('/:id')
       archive: plugin.isStyle ? undefined : plugin.archive,
       verified: plugin.verified,
       isStyle: plugin.isStyle,
-      downloads: plugin.downloads.length || 0
+      downloads: Array.isArray(plugin.downloads) ? plugin.downloads.length : 0
     })
   }))
   .patch(Auth.middleware(false), aw(async (req, res, next) => {

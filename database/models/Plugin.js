@@ -51,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
     approved: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    downloads: {
+      type: DataTypes.ARRAY(DataTypes.UUID),
+      defaultValue: []
     }
   }, {
     classMethods: {
