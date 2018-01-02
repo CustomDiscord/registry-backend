@@ -40,8 +40,9 @@ router.route('/')
         version: plugin.version,
         approved: plugin.approved,
         styles: plugin.styles,
-        archive: plugin.archive,
-        verified: plugin.verified
+        archive: plugin.isStyle ? undefined : plugin.archive,
+        verified: plugin.verified,
+        isStyle: plugin.isStyle
       })
     })
     return new Response({
@@ -64,8 +65,9 @@ router.route('/:id')
       version: plugin.version,
       approved: plugin.approved,
       styles: plugin.styles,
-      archive: plugin.archive,
-      verified: plugin.verified
+      archive: plugin.isStyle ? undefined : plugin.archive,
+      verified: plugin.verified,
+      isStyle: plugin.isStyle
     })
   }))
   .patch(Auth.middleware(false), aw(async (req, res, next) => {
@@ -116,14 +118,24 @@ router.route('/create')
   .put(Auth.middleware(false), bodyChecker([
     'name',
     'version',
-    'archive',
+    {
+      name: 'isStyle',
+      type: 'boolean'
+    },
     'description'
   ]), aw(async (req, res, next) => {
+    if (req.body.isStyle) {
+      if (typeof req.body.styles !== 'string') throw new ParameterNotDefinedError('styles')
+    } else {
+      if (typeof req.body.archive !== 'string') throw new ParameterNotDefinedError('archive')
+    }
     const plugin = await Plugin.create({
       name: req.body.name,
       version: req.body.version,
-      archive: req.body.archive,
       description: req.body.description,
+      isStyle: req.body.isStyle,
+      archive: req.body.isStyle ? undefined : req.body.archive,
+      styles: req.body.isStyle ? req.body.styles : undefined,
       owner: req.user.id
     })
     return new Response(true, 'Created', 200, {

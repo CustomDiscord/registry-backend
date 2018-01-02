@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
         isUrl: true
       }
     },
+    isStyle: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     archive: {
       type: DataTypes.STRING,
       validate: {
