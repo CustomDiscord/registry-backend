@@ -26,6 +26,7 @@
   },
   "server": {
     "port": 8660,
-    "domain": "http://localhost:8660"
+    "domain": "http://localhost:8660",
+    "frontend": "http://localhost:3000"
   }
 }

@@ -43,9 +43,20 @@ router.route('/callback')
     }
     // TODO: Redirect to frontend
     const token = Auth.generateToken(user, req.user)
-    return new Response(true, 'Token is in root', 200, {
+    res.redirect(`${config.get('server.frontend')}/auth/callback?token=${encodeURIComponent(token)}`)
+    /*return new Response(true, 'Token is in root', 200, {
       token
-    })
+    })*/
   }))
 
+router.route('/test')
+  .get(Auth.middleware(false), aw(async (req, res, next) => {
+    const token = req.token
+    const user = req.user
+    return new Response(true, 'Success', 200, {
+      admin: user.admin,
+      profile: token.profile,
+      valid: true
+    })
+  }))
 module.exports = router

@@ -36,6 +36,7 @@ router.route('/')
       plugins.push({
         id: plugin.id,
         name: plugin.name,
+        description: plugin.description,
         owner: plugin.owner,
         version: plugin.version,
         approved: plugin.approved,
@@ -62,6 +63,7 @@ router.route('/:id')
     return new Response({
       id: plugin.id,
       name: plugin.name,
+      description: plugin.description,
       owner: plugin.owner,
       version: plugin.version,
       approved: plugin.approved,

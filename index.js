@@ -17,6 +17,12 @@ const passport = require('passport')
 const app = express()
 app.set('port', config.get('server.port'))
 
+app.use((req, res, next) => {
+  res.set('Access-Control-Allow-Origin', '*')
+  res.set('Access-Control-Allow-Headers', 'Authorization')
+  return next()
+})
+
 /**
  * Passport
  */
