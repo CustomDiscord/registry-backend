@@ -7,7 +7,9 @@
  * 
  */
 const config = require('config')
+const fs = require('fs')
 const logger = require('../logger')
+const path = require('path')
 const Sequelize = require('sequelize')
 
 const db = new Sequelize(
@@ -22,7 +24,15 @@ const db = new Sequelize(
     logging: false
   }
 )
-require('./models/internal')(db)
+
+fs.readdirSync(path.join(__dirname, 'models'))
+  .filter((file) => {
+    return (file.indexOf('.') !== 0) && (file !== 'index.js') && (file.slice(-3) === '.js')
+  })
+  .forEach((file) => {
+    var model = db.import(path.join(__dirname, 'models', file))
+    db[model.name] = model
+  })
 
 db.authenticate().then(() => {
   logger.info('Successfully connected to database!')
