@@ -38,6 +38,7 @@ router.route('/')
         name: plugin.name,
         description: plugin.description,
         owner: plugin.owner,
+        discordOwner: plugin.discordOwner,
         version: plugin.version,
         approved: plugin.approved,
         styles: plugin.styles,
@@ -65,6 +66,7 @@ router.route('/:id')
       name: plugin.name,
       description: plugin.description,
       owner: plugin.owner,
+      discordOwner: plugin.discordOwner,
       version: plugin.version,
       approved: plugin.approved,
       styles: plugin.styles,
@@ -158,7 +160,8 @@ router.route('/create')
       isStyle: req.body.isStyle,
       archive: req.body.isStyle ? undefined : req.body.archive,
       styles: req.body.isStyle ? req.body.styles : undefined,
-      owner: req.user.id
+      owner: req.user.id,
+      discordOwner: req.user.name
     })
     return new Response(true, 'Created', 200, {
       created: true,

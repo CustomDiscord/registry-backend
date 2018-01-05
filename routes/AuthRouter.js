@@ -11,7 +11,7 @@ const config = require('config')
 const express = require('express')
 const passport = require('passport')
 const Response = require('../Response')
-const { User } = require('../database/models')
+const { User, Plugin } = require('../database/models')
 
 const aw = require('../awrap')
 const router = express.Router()
@@ -39,6 +39,16 @@ router.route('/callback')
     if(user.name !== `${req.user.username}#${req.user.discriminator}`) {
       user.update({
         name: `${req.user.username}#${req.user.discriminator}`
+      })
+      const plugins = await Plugin.findAll({
+        where: {
+          owner: user.id
+        }
+      })
+      plugins.forEach((plugin) => {
+        plugin.update({
+          discordOwner: `${req.user.username}#${req.user.discriminator}`
+        })
       })
     }
     // TODO: Redirect to frontend

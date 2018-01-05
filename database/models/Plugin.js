@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     owner: {
       type: DataTypes.UUID // UUID of the User
     },
+    discordOwner: {
+      type: DataTypes.STRING
+    },
     styles: {
       type: DataTypes.STRING,
       defaultValue: 'https://gist.githubusercontent.com/FNCxPro/ba5c71e82418398f4a26c45462d00291/raw/e086eca8d9e519f6fff90fc90dc195e27ed46a20/style.css',
