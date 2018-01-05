@@ -22,6 +22,23 @@ const router = express.Router()
 
 router.use(bodyParser.json())
 
+function pluginToObj(plugin) {
+  return {
+    id: plugin.id,
+    name: plugin.name,
+    description: plugin.description,
+    owner: plugin.owner,
+    discordOwner: plugin.discordOwner,
+    version: plugin.version,
+    approved: plugin.approved,
+    styles: plugin.styles,
+    archive: plugin.isStyle ? undefined : plugin.archive,
+    verified: plugin.verified,
+    isStyle: plugin.isStyle,
+    downloads: Array.isArray(plugin.downloads) ? plugin.downloads.length : 0
+  }
+}
+
 router.route('/')
   .get(aw(async (req, res, next) => {
     const _plugins = await Plugin.findAll({
@@ -32,25 +49,21 @@ router.route('/')
       }
     })
     const plugins = []
-    _plugins.forEach((plugin) => {
-      plugins.push({
-        id: plugin.id,
-        name: plugin.name,
-        description: plugin.description,
-        owner: plugin.owner,
-        discordOwner: plugin.discordOwner,
-        version: plugin.version,
-        approved: plugin.approved,
-        styles: plugin.styles,
-        archive: plugin.isStyle ? undefined : plugin.archive,
-        verified: plugin.verified,
-        isStyle: plugin.isStyle,
-        downloads: Array.isArray(plugin.downloads) ? plugin.downloads.length : 0
-      })
-    })
+    _plugins.forEach((plugin) => plugins.push(pluginToObj(plugin)))
     return new Response({
       plugins
     })
+  }))
+
+router.route('/owned')
+  .get(Auth.middleware(false), aw(async (req, res, next) => {
+    const _plugins = await Plugin.findAll({
+      where: {
+        owner: req.user.id
+      }
+    })
+    const plugins = []
+    _plugins.forEach((plugin) => plugins.push(pluginToObj(plugin)))
   }))
 
 router.route('/:id')
@@ -61,20 +74,7 @@ router.route('/:id')
     const plugin = await Plugin.findById(pkgId)
     if (!plugin) throw new PackageNotFoundError(pkgId)
     if (!plugin.approved) throw new PackageNotApprovedError()
-    return new Response({
-      id: plugin.id,
-      name: plugin.name,
-      description: plugin.description,
-      owner: plugin.owner,
-      discordOwner: plugin.discordOwner,
-      version: plugin.version,
-      approved: plugin.approved,
-      styles: plugin.styles,
-      archive: plugin.isStyle ? undefined : plugin.archive,
-      verified: plugin.verified,
-      isStyle: plugin.isStyle,
-      downloads: Array.isArray(plugin.downloads) ? plugin.downloads.length : 0
-    })
+    return new Response(pluginToObj(plugin))
   }))
   .patch(Auth.middleware(false), aw(async (req, res, next) => {
     if (typeof req.params.id !== 'string') throw new ParameterNotDefinedError('id')
