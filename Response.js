@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................Response.js
  * Created on.............Friday, 29th December 2017 12:33:28 pm

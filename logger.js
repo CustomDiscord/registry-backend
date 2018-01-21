@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................logger.js
  * Created on.............Thursday, 28th December 2017 9:11:04 pm

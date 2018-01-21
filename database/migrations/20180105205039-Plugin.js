@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................20180105205039-Plugin.js
  * Created on.............Friday, 5th January 2018 3:50:39 pm

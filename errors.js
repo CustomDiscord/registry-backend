@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................errors.js
  * Created on.............Friday, 29th December 2017 12:10:29 pm

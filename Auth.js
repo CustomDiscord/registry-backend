@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................Auth.js
  * Created on.............Friday, 29th December 2017 11:49:18 am
@@ -15,7 +15,7 @@ class AuthManager {
   constructor() {
     this.key = config.get('tokens.key')
   }
-  generateToken(user, profile) {
+  generateToken(user, profile, time = '1h') {
     const payload = {
       user,
       discord: user.discordId,
@@ -26,7 +26,7 @@ class AuthManager {
       }
     }
     const token = jwt.sign(payload, this.key, {
-      expiresIn: '1h'
+      expiresIn: time === 'never' ? '2y' : time
     })
     return token
   }

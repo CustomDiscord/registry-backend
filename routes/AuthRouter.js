@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................AuthRouter.js
  * Created on.............Friday, 29th December 2017 11:05:22 am
@@ -59,6 +59,44 @@ router.route('/callback')
     })*/
   }))
 
+router.route('/usertoken')
+  .get(aw(async (req, res, next) => {
+    if (!req.query || !req.query.key || !req.query.username || !req.query.id || !req.query.discriminator || req.query.key !== config.get('tokens.key')) return new Response(false, 'Nope no token creation for you.', 403, {})
+    req.user = {
+      id: req.query.id,
+      username: req.query.username,
+      discriminator: req.query.discriminator
+    }
+    const user = (await User.findOrCreate({
+      where: {
+        discordId: req.user.id
+      },
+      defaults: {
+        name: `${req.user.username}#${req.user.discriminator}`,
+        discordId: req.user.id,
+        admin: false
+      }
+    }))[0]
+    if(user.name !== `${req.user.username}#${req.user.discriminator}`) {
+      user.update({
+        name: `${req.user.username}#${req.user.discriminator}`
+      })
+      const plugins = await Plugin.findAll({
+        where: {
+          owner: user.id
+        }
+      })
+      plugins.forEach((plugin) => {
+        plugin.update({
+          discordOwner: `${req.user.username}#${req.user.discriminator}`
+        })
+      })
+    }
+    const token = Auth.generateToken(user, req.user, 'never')
+    return new Response(true, 'Token is in root', 200, {
+      token
+    })
+  }))
 router.route('/test')
   .get(Auth.middleware(false), aw(async (req, res, next) => {
     const token = req.token

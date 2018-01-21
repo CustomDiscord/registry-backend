@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................20171229200716-create-User.js
  * Created on.............Friday, 29th December 2017 3:07:16 pm

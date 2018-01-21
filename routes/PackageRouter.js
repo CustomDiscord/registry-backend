@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................PackageRouter.js
  * Created on.............Friday, 29th December 2017 12:08:34 pm

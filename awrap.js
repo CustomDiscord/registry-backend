@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................awrap.js
  * Created on.............Friday, 29th December 2017 10:57:12 am

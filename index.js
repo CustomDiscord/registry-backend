@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................index.js
  * Created on.............Thursday, 28th December 2017 8:51:07 pm

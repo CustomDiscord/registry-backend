@@ -1,5 +1,5 @@
 /**
- * Custocord Registry Backend
+ * CustomDiscord Registry Backend
  * 
  * File...................middleware.js
  * Created on.............Friday, 29th December 2017 2:13:17 pm

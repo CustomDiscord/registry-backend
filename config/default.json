@@ -4,7 +4,7 @@
     "port": 5432,
     "username": "postgres",
     "password": "password",
-    "database": "custocord"
+    "database": "customdiscord"
   },
   "logging": {
     "level": "info",
@@ -22,7 +22,7 @@
     ]
   },
   "tokens": {
-    "key": "KkhI5YfNCa8edGwNrA8MxMmL4UFDeoFr"
+    "key": "Change me in production!"
   },
   "server": {
     "port": 8660,
